@@ -35,6 +35,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use('/logistics', require('./routes/userRoutes'));
+app.use('/logistics', require('./routes/homePageRoutes'));
 
 
 
