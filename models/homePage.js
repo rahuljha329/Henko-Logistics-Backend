@@ -11,9 +11,6 @@ description:[{
 image:{
     type:String
 },
-page:{
-    type:String
-},
 section:{
     type:Number
 }
