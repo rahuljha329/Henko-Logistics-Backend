@@ -125,4 +125,5 @@ const deleteFAQ = async (req, res) => {
   }
 };
 
-module.exports = { createFAQ ,getAllFAQ ,updateFAQ ,deleteFAQ};
+
+module.exports = { createFAQ , getAllFAQ , updateFAQ , deleteFAQ };

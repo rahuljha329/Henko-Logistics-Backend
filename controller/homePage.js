@@ -62,4 +62,4 @@ const getHomePage = async (req, res) => {
 };
 
 
-module.exports ={createHomePage ,getHomePage}
+module.exports ={ createHomePage , getHomePage }

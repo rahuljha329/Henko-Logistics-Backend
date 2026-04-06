@@ -66,5 +66,4 @@ const generateOtpToken = async (emailId, otp) => {
   });
 };
 
-
 module.exports = { generateToken , verifyAdminToken, checkAccess, generateOtpToken }
