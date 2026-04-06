@@ -37,6 +37,8 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use('/logistics', require('./routes/userRoutes'));
 app.use('/logistics', require('./routes/homePageRoutes'));
 app.use('/logistics', require('./routes/faqRoutes'));
+app.use('/logistics', require('./routes/aboutUsRoutes'));
+app.use('/logistics', require('./routes/serviceCategory'));
 
 
 
