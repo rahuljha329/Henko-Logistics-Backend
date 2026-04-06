@@ -1,28 +1,25 @@
-const faqModel = require('../models/faq');
+const serviceCategoryModel = require('../models/serviceCategory');
 const { checkAccess } = require('../middleware/helperMiddleware');
 
-const createFAQ = async (req, res) => {
+const createServiceCategory = async (req, res) => {
   try {
     if (!checkAccess(req, res, ["Admin"])) return;
 
-    const { question, answer } = req.body;
+    const { name } = req.body;
 
-    if (!question || !answer) {
+    if (!name) {
       return res.status(400).json({
-        message: "Question and Answer are required"
+        message: "name required"
       });
     }
 
-    const faq = await faqModel.create({
-      content: {
-        question,
-        answer
-      }
+    const serviceCategory = await serviceCategoryModel.create({
+    name
     });
 
     return res.status(201).json({
-      message: "FAQ created successfully",
-      data: faq
+      message: "serviceCategory created successfully",
+      data: serviceCategory
     });
 
   } catch (error) {
@@ -34,13 +31,13 @@ const createFAQ = async (req, res) => {
   }
 };
 
-const getAllFAQ = async (req, res) => {
+const getServiceCategory = async (req, res) => {
   try {
-    const faqs = await faqModel.find();
+    const serviceCategory = await serviceCategoryModel.find();
 
     return res.status(200).json({
-      message: "All FAQ are fetched successfully",
-      data: faqs
+      message: "All serviceCategory are fetched successfully",
+      data: serviceCategory
     });
 
   } catch (error) {
@@ -52,68 +49,33 @@ const getAllFAQ = async (req, res) => {
   }
 };
 
-const updateFAQ = async (req, res) => {
-  try {
-    if (!checkAccess(req, res, ["Admin"])) return;
-
-    const { id } = req.query;
-    const { question, answer } = req.body;
-
-    if (!id) {
-      return res.status(400).json({
-        message: "FAQ id is required"
-      });
-    }
-
-    const faq = await faqModel.findById(id);
-
-    if (!faq) {
-      return res.status(404).json({
-        message: "FAQ not found"
-      });
-    }
-
-    if (question) faq.content.question = question;
-    if (answer) faq.content.answer = answer;
-
-    await faq.save();
-
-    return res.status(200).json({
-      message: "FAQ updated successfully",
-      data: faq
-    });
-
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      message: "Internal server error",
-      error: error.message
-    });
-  }
-};
-
-const deleteFAQ = async (req, res) => {
+const updateServiceCategory = async (req, res) => {
   try {
     if (!checkAccess(req, res, ["Admin"])) return;
 
     const { id } = req.query;
+    const { name } = req.body;
 
     if (!id) {
       return res.status(400).json({
-        message: "FAQ id is required"
+        message: "ServiceCategory id is required"
       });
     }
 
-    const faq = await faqModel.findByIdAndDelete(id);
+    const ServiceCategory = await serviceCategoryModel.findById(id);
 
-    if (!faq) {
+    if (!ServiceCategory) {
       return res.status(404).json({
-        message: "FAQ not found"
+        message: "ServiceCategory not found"
       });
     }
+
+    if (name) ServiceCategory.name = name;
+    await ServiceCategory.save();
 
     return res.status(200).json({
-      message: "FAQ deleted successfully"
+      message: "ServiceCategory updated successfully",
+      data: ServiceCategory
     });
 
   } catch (error) {
@@ -125,5 +87,37 @@ const deleteFAQ = async (req, res) => {
   }
 };
 
+const deleteServiceCategory = async (req, res) => {
+  try {
+    if (!checkAccess(req, res, ["Admin"])) return;
 
-module.exports = { createFAQ , getAllFAQ , updateFAQ , deleteFAQ };
+    const { id } = req.query;
+
+    if (!id) {
+      return res.status(400).json({
+        message: " id is required"
+      });
+    }
+
+    const ServiceCategory = await serviceCategoryModel.findByIdAndDelete(id);
+
+    if (!ServiceCategory) {
+      return res.status(404).json({
+        message: "ServiceCategory not found"
+      });
+    }
+
+    return res.status(200).json({
+      message: "ServiceCategory deleted successfully"
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Internal server error",
+      error: error.message
+    });
+  }
+};
+
+module.exports = {createServiceCategory ,getServiceCategory ,updateServiceCategory ,deleteServiceCategory}

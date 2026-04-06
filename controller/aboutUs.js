@@ -1,33 +1,45 @@
-const homePageModel = require('../models/homePage');
-const { checkAccess } = require('../middleware/helperMiddleware')
+const aboutUsModel = require('../models/aboutUs');
+const { checkAccess } = require('../middleware/helperMiddleware');
 
-const createHomePage = async (req, res) => {
+const createAboutUs = async (req, res) => {
   try {
     if (!checkAccess(req, res, ["Admin"])) return;
 
-    const { title, description ,section} = req.body;
+    const { title, description, content, section } = req.body;
 
-    const imagePath = req.file
-    ? `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`
-    : "";
-    const exists = await homePageModel.findOne({ section });
+    if (!section) {
+      return res.status(400).json({
+        message: "Section is required"
+      });
+    }
+
+    const exists = await aboutUsModel.findOne({ section });
     if (exists) {
       return res.status(400).json({
         message: "Section already exists"
       });
     }
 
+    const imagePath = req.file
+      ? `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`
+      : "";
 
-    const homePage = await homePageModel.create({
+    let parsedContent = [];
+    if (content) {
+      parsedContent = typeof content === "string" ? JSON.parse(content) : content;
+    }
+
+    const about = await aboutUsModel.create({
       title,
       description,
-      image:imagePath,
+      content: parsedContent,
+      image: imagePath,
       section
     });
 
     return res.status(201).json({
-      message: "HomePage created successfully",
-      data: homePage
+      message: "About Us created successfully",
+      data: about
     });
 
   } catch (error) {
@@ -39,7 +51,7 @@ const createHomePage = async (req, res) => {
   }
 };
 
-const getHomePage = async (req, res) => {
+const getAboutUs = async (req, res) => {
   try {
     const { section } = req.query;
 
@@ -49,11 +61,11 @@ const getHomePage = async (req, res) => {
       filter.section = Number(section);
     }
 
-    const data = await homePageModel
+    const data = await aboutUsModel
       .find(filter)
 
     return res.status(200).json({
-      message: "HomePage data fetched successfully",
+      message: "About Us data fetched successfully",
       count: data.length,
       data
     });
@@ -67,7 +79,7 @@ const getHomePage = async (req, res) => {
   }
 };
 
-const deleteHomePage = async (req, res) => {
+const deleteAboutUs = async (req, res) => {
   try {
     if (!checkAccess(req, res, ["Admin"])) return;
 
@@ -79,16 +91,16 @@ const deleteHomePage = async (req, res) => {
       });
     }
 
-    const homePage = await homePageModel.findByIdAndDelete(id);
+    const aboutUs = await aboutUsModel.findByIdAndDelete(id);
 
-    if (!homePage) {
+    if (!aboutUs) {
       return res.status(404).json({
-        message: "homePage not found"
+        message: "aboutUs not found"
       });
     }
 
     return res.status(200).json({
-      message: "homePage deleted successfully"
+      message: "aboutUs deleted successfully"
     });
 
   } catch (error) {
@@ -100,5 +112,4 @@ const deleteHomePage = async (req, res) => {
   }
 };
 
-
-module.exports ={ createHomePage , getHomePage ,deleteHomePage}
+module.exports = {createAboutUs ,getAboutUs ,deleteAboutUs}
