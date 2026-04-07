@@ -38,7 +38,10 @@ app.use('/logistics', require('./routes/userRoutes'));
 app.use('/logistics', require('./routes/homePageRoutes'));
 app.use('/logistics', require('./routes/faqRoutes'));
 app.use('/logistics', require('./routes/aboutUsRoutes'));
-app.use('/logistics', require('./routes/serviceCategory'));
+app.use('/logistics', require('./routes/serviceCategoryRoutes'));
+app.use('/logistics', require('./routes/serviceRoutes'));
+app.use('/logistics', require('./routes/resourceCategoryRoutes'));
+app.use('/logistics', require('./routes/blogRoutes'));
 
 
 

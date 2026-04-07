@@ -1,5 +1,6 @@
 const faqModel = require('../models/faq');
 const { checkAccess } = require('../middleware/helperMiddleware');
+const mongoose = require('mongoose');
 
 const createFAQ = async (req, res) => {
   try {
